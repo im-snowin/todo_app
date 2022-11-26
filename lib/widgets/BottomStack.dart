@@ -30,7 +30,6 @@ class BottomStack extends StatelessWidget {
               ),
               child: TextField(
                 controller: todoController,
-                onChanged: (value) => print(todoController.text),
                 decoration: const InputDecoration(
                   hintText: 'Add a new todo',
                   hintStyle: TextStyle(color: textGray),
