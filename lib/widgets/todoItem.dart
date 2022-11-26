@@ -5,7 +5,14 @@ import 'package:todo_app/model/todo.dart';
 
 class TodoItem extends StatelessWidget {
   final Todo todo;
-  const TodoItem({super.key, required this.todo});
+  final onTodoChanged;
+  final onTodoDeleted;
+
+  const TodoItem(
+      {super.key,
+      required this.todo,
+      required this.onTodoChanged,
+      required this.onTodoDeleted});
 
   @override
   Widget build(BuildContext context) {
@@ -19,7 +26,7 @@ class TodoItem extends StatelessWidget {
           tileColor: Colors.white,
           leading: IconButton(
             onPressed: () {
-              print('Clicked');
+              onTodoChanged(todo);
             },
             icon: Icon(
               todo.isDone ? Icons.check_box : Icons.check_box_outline_blank,
@@ -35,7 +42,9 @@ class TodoItem extends StatelessWidget {
             ),
           ),
           trailing: IconButton(
-            onPressed: () {},
+            onPressed: () {
+              onTodoDeleted(todo.id);
+            },
             icon: const Icon(
               Icons.delete,
               color: danger,

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:todo_app/constants/colors.dart';
+import 'package:todo_app/widgets/BottomStack.dart';
 import 'package:todo_app/widgets/searchBar.dart';
 import 'package:todo_app/widgets/todosList.dart';
 
@@ -12,14 +13,19 @@ class Home extends StatelessWidget {
     return Scaffold(
       appBar: _buildAppBar(),
       backgroundColor: primary,
-      body: Container(
-        padding: const EdgeInsets.all(15),
-        child: Column(
-          children: const <Widget>[
-            SearchBar(),
-            TodoList(),
-          ],
-        ),
+      body: Stack(
+        children: [
+          Container(
+            padding: const EdgeInsets.all(15),
+            child: Column(
+              children: const <Widget>[
+                SearchBar(),
+                TodoList(),
+              ],
+            ),
+          ),
+          const BottomStack()
+        ],
       ),
     );
   }
@@ -34,7 +40,7 @@ class Home extends StatelessWidget {
             Text(
               title,
               style: const TextStyle(
-                  color: textColor, fontWeight: FontWeight.bold),
+                  color: textColor, fontWeight: FontWeight.bold, fontSize: 28),
             ),
             SizedBox(
               width: 40,
