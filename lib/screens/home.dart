@@ -1,12 +1,41 @@
 import 'package:flutter/material.dart';
+
 import 'package:todo_app/constants/colors.dart';
+import 'package:todo_app/model/todo.dart';
 import 'package:todo_app/widgets/BottomStack.dart';
 import 'package:todo_app/widgets/searchBar.dart';
 import 'package:todo_app/widgets/todosList.dart';
 
-class Home extends StatelessWidget {
+class Home extends StatefulWidget {
   final String title;
   const Home({super.key, required this.title});
+
+  @override
+  State<Home> createState() => _HomeState();
+}
+
+class _HomeState extends State<Home> {
+  final _todos = Todo.todosList();
+  final _todoController = TextEditingController();
+
+  void _addTodo(String text) {
+    setState(() {
+      _todos.add(Todo(id: DateTime.now().microsecondsSinceEpoch, text: text));
+    });
+    _todoController.clear();
+  }
+
+  void _handleTodoChange(Todo todo) {
+    setState(() {
+      todo.isDone = !todo.isDone;
+    });
+  }
+
+  void _handleTodoDelete(int id) {
+    setState(() {
+      _todos.removeWhere((todo) => todo.id == id);
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -18,13 +47,16 @@ class Home extends StatelessWidget {
           Container(
             padding: const EdgeInsets.all(15),
             child: Column(
-              children: const <Widget>[
-                SearchBar(),
-                TodoList(),
+              children: <Widget>[
+                const SearchBar(),
+                TodoList(
+                    todos: _todos,
+                    handleTodoChange: _handleTodoChange,
+                    handleTodoDelete: _handleTodoDelete),
               ],
             ),
           ),
-          const BottomStack()
+          BottomStack(addTodo: _addTodo, todoController: _todoController)
         ],
       ),
     );
@@ -38,7 +70,7 @@ class Home extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Text(
-              title,
+              widget.title,
               style: const TextStyle(
                   color: textColor, fontWeight: FontWeight.bold, fontSize: 28),
             ),

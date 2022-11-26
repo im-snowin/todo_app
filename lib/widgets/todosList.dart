@@ -4,28 +4,17 @@ import 'package:todo_app/constants/colors.dart';
 import 'package:todo_app/widgets/todoItem.dart';
 import 'package:todo_app/model/todo.dart';
 
-class TodoList extends StatefulWidget {
-  const TodoList({super.key});
+class TodoList extends StatelessWidget {
+  final List<Todo> todos;
+  final Function handleTodoChange;
+  final Function handleTodoDelete;
+  const TodoList(
+      {super.key,
+      required this.todos,
+      required this.handleTodoChange,
+      required this.handleTodoDelete});
 
-  @override
-  State<TodoList> createState() => _TodoListState();
-}
-
-class _TodoListState extends State<TodoList> {
-  final _todos = Todo.todosList();
-
-  void _handleTodoChange(Todo todo) {
-    setState(() {
-      todo.isDone = !todo.isDone;
-    });
-  }
-
-  void _handleTodoDelete(int id) {
-    setState(() {
-      _todos.removeWhere((todo) => todo.id == id);
-    });
-  }
-
+  // final _todos = Todo.todosList();
   @override
   Widget build(BuildContext context) {
     return Expanded(
@@ -42,11 +31,11 @@ class _TodoListState extends State<TodoList> {
               ),
             ),
           ),
-          for (Todo todo in _todos)
+          for (Todo todo in todos)
             TodoItem(
               todo: todo,
-              onTodoChanged: _handleTodoChange,
-              onTodoDeleted: _handleTodoDelete,
+              onTodoChanged: handleTodoChange,
+              onTodoDeleted: handleTodoDelete,
             ),
         ],
       ),

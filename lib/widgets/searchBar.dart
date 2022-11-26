@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+
 import 'package:todo_app/constants/colors.dart';
 
 class SearchBar extends StatefulWidget {

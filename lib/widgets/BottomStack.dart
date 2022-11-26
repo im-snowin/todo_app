@@ -1,9 +1,15 @@
 import 'package:flutter/material.dart';
+
 import 'package:todo_app/constants/colors.dart';
 
 class BottomStack extends StatelessWidget {
-  const BottomStack({super.key});
+  final TextEditingController todoController;
+  final Function addTodo;
 
+  const BottomStack(
+      {super.key, required this.addTodo, required this.todoController});
+
+  // final _todos = Todo.todosList();
   @override
   Widget build(BuildContext context) {
     return Align(
@@ -22,8 +28,10 @@ class BottomStack extends StatelessWidget {
                 color: Colors.white,
                 borderRadius: BorderRadius.circular(10),
               ),
-              child: const TextField(
-                decoration: InputDecoration(
+              child: TextField(
+                controller: todoController,
+                onChanged: (value) => print(todoController.text),
+                decoration: const InputDecoration(
                   hintText: 'Add a new todo',
                   hintStyle: TextStyle(color: textGray),
                   border: InputBorder.none,
@@ -48,7 +56,9 @@ class BottomStack extends StatelessWidget {
                 '+',
                 style: TextStyle(fontSize: 40),
               ),
-              onPressed: () {},
+              onPressed: () {
+                addTodo(todoController.text);
+              },
             ),
           ),
         ],

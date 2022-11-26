@@ -1,12 +1,12 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+
 import 'package:todo_app/constants/colors.dart';
 import 'package:todo_app/model/todo.dart';
 
 class TodoItem extends StatelessWidget {
   final Todo todo;
-  final onTodoChanged;
-  final onTodoDeleted;
+  final Function onTodoChanged;
+  final Function onTodoDeleted;
 
   const TodoItem(
       {super.key,
