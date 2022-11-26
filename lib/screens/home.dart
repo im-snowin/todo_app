@@ -16,13 +16,38 @@ class Home extends StatefulWidget {
 
 class _HomeState extends State<Home> {
   final _todos = Todo.todosList();
+  List<Todo> _foundedTodos = [];
   final _todoController = TextEditingController();
+  final _searchController = TextEditingController();
+
+  @override
+  void initState() {
+    _foundedTodos = _todos;
+    super.initState();
+  }
 
   void _addTodo(String text) {
-    setState(() {
-      _todos.add(Todo(id: DateTime.now().microsecondsSinceEpoch, text: text));
-    });
+    if (text.length >= 3) {
+      setState(() {
+        _todos.add(Todo(id: DateTime.now().microsecondsSinceEpoch, text: text));
+      });
+    }
     _todoController.clear();
+  }
+
+  void _searchTodo(String text) {
+    if (text.isNotEmpty) {
+      setState(() {
+        _foundedTodos = _foundedTodos
+            .where(
+                (item) => item.text.toLowerCase().contains(text.toLowerCase()))
+            .toList();
+      });
+    } else {
+      setState(() {
+        _foundedTodos = _todos;
+      });
+    }
   }
 
   void _handleTodoChange(Todo todo) {
@@ -48,9 +73,12 @@ class _HomeState extends State<Home> {
             padding: const EdgeInsets.all(15),
             child: Column(
               children: <Widget>[
-                const SearchBar(),
+                SearchBar(
+                  searchController: _searchController,
+                  searchTodo: _searchTodo,
+                ),
                 TodoList(
-                    todos: _todos,
+                    todos: _foundedTodos,
                     handleTodoChange: _handleTodoChange,
                     handleTodoDelete: _handleTodoDelete),
               ],

@@ -2,14 +2,13 @@ import 'package:flutter/material.dart';
 
 import 'package:todo_app/constants/colors.dart';
 
-class SearchBar extends StatefulWidget {
-  const SearchBar({super.key});
+class SearchBar extends StatelessWidget {
+  final TextEditingController searchController;
+  final Function searchTodo;
 
-  @override
-  State<SearchBar> createState() => _SearchBarState();
-}
+  const SearchBar(
+      {super.key, required this.searchController, required this.searchTodo});
 
-class _SearchBarState extends State<SearchBar> {
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -18,8 +17,10 @@ class _SearchBarState extends State<SearchBar> {
         color: Colors.white,
         borderRadius: BorderRadius.circular(20),
       ),
-      child: const TextField(
-        decoration: InputDecoration(
+      child: TextField(
+        controller: searchController,
+        onChanged: (value) => searchTodo(searchController.text),
+        decoration: const InputDecoration(
           contentPadding: EdgeInsets.all(0),
           prefixIcon: Icon(
             Icons.search,
